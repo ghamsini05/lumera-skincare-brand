@@ -7,7 +7,7 @@ const products = [
     id: 1,
     name: "Hydrating Cleanser",
     category: "cleanser",
-    price: 28,
+    price: 2299,
     badge: null,
     rating: 4.8,
     reviews: 142,
@@ -18,7 +18,7 @@ const products = [
     id: 2,
     name: "Vitamin C Serum",
     category: "serum",
-    price: 42,
+    price: 3499,
     badge: "Bestseller",
     rating: 4.9,
     reviews: 317,
@@ -29,7 +29,7 @@ const products = [
     id: 3,
     name: "Daily Moisturizer",
     category: "moisturizer",
-    price: 35,
+    price: 2899,
     badge: null,
     rating: 4.7,
     reviews: 208,
@@ -40,7 +40,7 @@ const products = [
     id: 4,
     name: "Glow Repair Serum",
     category: "serum",
-    price: 48,
+    price: 3999,
     badge: "New",
     rating: 4.9,
     reviews: 94,
@@ -51,7 +51,7 @@ const products = [
     id: 5,
     name: "Creamy Face Wash",
     category: "cleanser",
-    price: 25,
+    price: 1999,
     badge: null,
     rating: 4.6,
     reviews: 175,
@@ -62,7 +62,7 @@ const products = [
     id: 6,
     name: "Soft Skin Moisturizer",
     category: "moisturizer",
-    price: 38,
+    price: 1999,
     badge: "Popular",
     rating: 4.8,
     reviews: 261,
@@ -175,7 +175,7 @@ function updateCartUI() {
       <img src="${item.image}" alt="${item.name}">
       <div class="cart-item-info">
         <h4>${item.name}</h4>
-        <p class="cart-price">$${item.price}</p>
+        <p class="cart-price">₹${item.price.toLocaleString('en-IN')}</p>
         <div class="cart-item-qty">
           <button onclick="changeQty(${item.id}, -1)">−</button>
           <span>${item.qty}</span>
@@ -187,7 +187,7 @@ function updateCartUI() {
   `).join('');
 
   const totalPrice = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-  cartTotal.textContent = `$${totalPrice}`;
+  cartTotal.textContent = `₹${totalPrice.toLocaleString('en-IN')}`;
 }
 
 // ===== QUICK VIEW MODAL =====
@@ -201,7 +201,7 @@ function openModal(product) {
         <span class="stars">${'★'.repeat(5)}</span>
         <span style="font-size:13px;color:var(--text-light)">${product.rating} (${product.reviews} reviews)</span>
       </div>
-      <span class="price">$${product.price}</span>
+      <span class="price">₹${product.price.toLocaleString('en-IN')}</span>
       <p>${product.description}</p>
       <button class="add-cart modal-atc-btn">Add to Cart</button>
     </div>
@@ -257,7 +257,7 @@ function displayProducts(list) {
           <span class="rating-count">(${product.reviews})</span>
         </div>
         <div class="product-footer">
-          <span class="price">$${product.price}</span>
+          <span class="price">₹${product.price.toLocaleString('en-IN')}</span>
           <button class="add-cart atc-btn">Add to Cart</button>
         </div>
       </div>
@@ -334,5 +334,36 @@ document.getElementById("newsletterForm").addEventListener("submit", (e) => {
   e.target.reset();
 });
 
+// ===== CHECKOUT BUTTON =====
+const checkoutBtn = document.getElementById("checkoutBtn");
+
+if (checkoutBtn) {
+  checkoutBtn.addEventListener("click", () => {
+    if (cart.length === 0) {
+      showToast("Your cart is empty");
+      return;
+    }
+
+    const totalPrice = cart.reduce(
+      (sum, item) => sum + item.price * item.qty,
+      0
+    );
+
+    alert(
+      `Demo Checkout
+
+Amount: ₹${totalPrice.toLocaleString('en-IN')}
+
+Available Payment Methods:
+• UPI
+• PhonePe
+• Google Pay
+• Paytm
+• Visa
+• Mastercard
+• RuPay`
+    );
+  });
+}
 // ===== INIT =====
 displayProducts(products);
